@@ -67,7 +67,7 @@ class GameTable extends Component {
 // above can be removed later when finished debugging
 
   //Creating the flippers
-  //Containers to keep flippers in place so isStatic option does not need to be used
+  //Containers needed to keep flippers in place so isStatic option does not need to be used
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
@@ -79,7 +79,7 @@ class GameTable extends Component {
       chamfer: {}}); //chamfer allows for rounded edges on the paddles
 
   //Left flipper hinge
-    leftFlipper.hinge = Bodies.circle(110, 450, 2, {
+    leftFlipper.hinge = Bodies.circle(107, 450, 2, {
       label: "Left Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
@@ -93,13 +93,20 @@ class GameTable extends Component {
       angle: -1.9,
       chamfer: {}});
 
+  //Right flipper hinge
+    rightFlipper.hinge = Bodies.circle(242, 450, 2, {
+      label: "Left Flipper Hinge",
+      isStatic: true,
+      render: {fillStyle: "#ffffff"}
+    });
 
-    World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper]);
 
-    //Functionality for moving flippers when key is pressed
+    World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper, rightFlipper.hinge]);
+
+    //Functionality needed for moving flippers when key is pressed
     //
 
-  //end of flipper creation
+  //End of flipper creation
 
     // add mouse control
     var mouse = Mouse.create(render.canvas),
