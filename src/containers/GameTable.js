@@ -21,12 +21,15 @@ class GameTable extends Component {
     var engine = Engine.create({});
     console.log("engine: ", engine);
 
+    const canvasWidth = 450;
+    const canvasHeight = 600;
+
     var render = Render.create({
       element: this.refs.game,
       engine: engine,
       options: {
-        width: 450,
-        height: 600,
+        width: canvasWidth,
+        height: canvasHeight,
         wireframes: false,
         background: "#E0FFFF",
         currentbackground: "#E0FFFF"
@@ -34,33 +37,31 @@ class GameTable extends Component {
     });
     console.log("render:", render);
 
-    var wallOptions = { isStatic: true, render: {fillStyle: "#4B0082"}};
+    function rect(x, y, width, height, label, angle, chamferRadius, color){
+      return Bodies.rectangle(x, y, width, height, {
+        isStatic: true,
+        restitution: 1,
+        label: label,
+        angle: angle,
+        chamfer :{ radius: chamferRadius},
+        render: {fillStyle: color}
+      });
+    }
 
     World.add(engine.world, [
-      // walls - x, y, width, height, {options}
-      // Top
-      Bodies.rectangle(0, 0, 900, 50, wallOptions),
-      // Left
-      Bodies.rectangle(0, 0, 50, 1200, wallOptions),
-      // Bottom
-      Bodies.rectangle(0, 600, 900, 50, wallOptions),
-      // Right
-      Bodies.rectangle(450, 0, 50, 1200, wallOptions),
-      // Left Ledge
-      Bodies.rectangle(50, 450, 100, 20, wallOptions),
-      // Right Ledge
-      Bodies.rectangle(300, 450, 100, 20, wallOptions),
-      // Ball Release wall
-      Bodies.rectangle(345, 575, 20, 750, wallOptions),
-      // Top right angled wall
-      Bodies.rectangle(345, 30, 5, 250, {angle: -45, isStatic: true, render: {fillStyle: "#4B0082"}}),
-      // Bumper
+      rect(0, 0, 900, 50, "Top Wall", 0, 0, "#4B0082"),
+      rect(0, 0, 50, 1200, "Left Wall", 0, 0, "#4B0082"),
+      rect(0, 600, 900, 50, "Bottom Wall", 0, 0, "#4B0082"),
+      rect(450, 0, 50, 1200, "Right Wall", 0, 0, "#4B0082"),
+      rect(50, 450, 100, 20, "Left Ledge", 0, 10, "#4B0082"),
+      rect(300, 450, 100, 20, "Right Ledge", 0, 10, "#4B0082"),
+      rect(345, 575, 20, 750, "Ball Release wall", 0, 10, "#4B0082"),
+      rect(390, 50, 5, 100, "Top Right angled wall", -45, 0, "#4B0082"),
       Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}})
     ]);
 
 // these var are NOT USED anywhere in game but using to log out options for rectangle
-    wallOptions.label = "Triangle Wall";
-    var triangleWall = Bodies.rectangle(345, 30, 5, 250, wallOptions);
+    var triangleWall = rect(345, 30, 5, 250, "Triangle Wall", 0, 0, "#000");
     console.log("Rectangle: ", triangleWall);
     var bumper = Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}});
     console.log("bumper: ", bumper);
