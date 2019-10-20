@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import Matter from "matter-js";
+import MatterAttractors from "matter-attractors";
 // import DrawStatic from "../helpers/DrawStatic";
-import DrawFlippers from "../helpers/DrawFlippers.js";
+// import DrawFlippers from "../helpers/DrawFlippers.js";
 
 class GameTable extends Component {
   constructor(props) {
@@ -66,11 +67,10 @@ class GameTable extends Component {
 // above can be removed later when finished debugging
 
   //Creating the flippers
-  // Left Flipper:
-    //Containers top keep flipper in place so isStatic does not need to be used
-    //
+  //Containers to keep flippers in place so isStatic option does not need to be used
 
-    // (x, y, width, height, slope, [options])
+  // Left Flipper:
+  // (x, y, width, height, slope, [options])
     let leftFlipper = Bodies.trapezoid(135, 460, 20, 70, 0.23, {
       label: "Left Flipper",
       isStatic: true,
@@ -78,10 +78,14 @@ class GameTable extends Component {
       angle: 1.9,
       chamfer: {}}); //chamfer allows for rounded edges on the paddles
 
-  // Right Flipper:
-    //Containers top keep flipper in place so isStatic does not need to be used
-    //
+  //Left flipper hinge
+    leftFlipper.hinge = Bodies.circle(110, 450, 2, {
+      label: "Left Flipper Hinge",
+      isStatic: true,
+      render: {fillStyle: "#ffffff"}
+    });
 
+  // Right Flipper:
     let rightFlipper = Bodies.trapezoid(215, 460, 20, 70, 0.23, {
       label: "Right Flipper",
       isStatic: true,
@@ -90,7 +94,7 @@ class GameTable extends Component {
       chamfer: {}});
 
 
-    World.add(engine.world, [leftFlipper, rightFlipper]);
+    World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper]);
 
     //Functionality for moving flippers when key is pressed
     //
