@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import ReactDOM from "react-dom";
 import Matter from "matter-js";
+// import DrawStatic from "../helpers/DrawStatic";
 
 class GameTable extends Component {
   constructor(props) {
@@ -16,12 +16,11 @@ class GameTable extends Component {
       Mouse = Matter.Mouse,
       MouseConstraint = Matter.MouseConstraint;
 
-    var engine = Engine.create({
-      // positionIterations: 20
-    });
+    var engine = Engine.create({});
+    console.log("engine: ", engine);
 
     var render = Render.create({
-      element: this.refs.scene,
+      element: this.refs.game,
       engine: engine,
       options: {
         width: 450,
@@ -54,17 +53,16 @@ class GameTable extends Component {
       // Top right angled wall
       Bodies.rectangle(345, 30, 5, 250, {angle: -45, isStatic: true, render: {fillStyle: "#4B0082"}}),
       // Bumper
-      Bodies.circle(140, 140, 50, {isStatic: true, render: {fillStyle: "#B22222"}})
+      Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}})
     ]);
-    var triangleWall = Bodies.rectangle(345, 30, 5, 5, wallOptions);
-    console.log(triangleWall);
 
-    var ballOptions = {restitution: 0.5, render: {fillStyle: "#C0C0C0"}}
-    // circles - x, y, radius, {options}
-    var pinball = Bodies.circle(390, 540, 20, ballOptions);
-    // var ballA = Bodies.circle(200, 20, 30, ballOptions);
-    // var ballB = Bodies.circle(110, 50, 30, ballOptions);
-    // World.add(engine.world, [ballA, ballB]);
+// these var are NOT USED anywhere in game but using to log out options for rectangle
+    wallOptions.label = "Triangle Wall";
+    var triangleWall = Bodies.rectangle(345, 30, 5, 250, wallOptions);
+    console.log("Rectangle: ", triangleWall);
+    var bumper = Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}});
+    console.log("bumper: ", bumper);
+// above can be removed later when finished debugging
 
     // add mouse control
     var mouse = Mouse.create(render.canvas),
@@ -83,15 +81,18 @@ class GameTable extends Component {
     Matter.Events.on(mouseConstraint, "mousedown", function(event) {
       console.log("x: ", event.mouse.position.x);
       console.log("y: ", event.mouse.position.y);
-      // World.add(engine.world, Bodies.circle(150, 50, 20, ballOptions));
     });
+
+    var ballOptions = {restitution: 0.5, label: "Pinball", render: {fillStyle: "#C0C0C0"}}
+    // circles - x, y, radius, {options}
+    var pinball = Bodies.circle(390, 540, 20, ballOptions);
+    console.log("Pinball: ", pinball);
 
     const launchPinball = function (event){
       if(event.keyCode===32){
         World.add(engine.world, [pinball]);
         Matter.Body.setVelocity(pinball, { x: 0, y: -30});
 		    Matter.Body.setAngularVelocity(pinball, 0);
-        console.log("Prepare to launch!!!");
       };
     };
 
@@ -99,14 +100,13 @@ class GameTable extends Component {
     document.addEventListener('keydown', launchPinball, false);
     });
 
-
-
     Engine.run(engine);
     Render.run(render);
+    console.log("Bumper totalContacts: ", bumper.parent.totalContacts);
   }
 
   render() {
-    return <div ref="scene" />;
+    return <div ref="game" />;
   }
 }
 export default GameTable;
