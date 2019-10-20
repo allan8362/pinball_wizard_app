@@ -49,14 +49,16 @@ class GameTable extends Component {
     }
 
     World.add(engine.world, [
-      rect(0, 0, 900, 50, "Top Wall", 0, 0, "#4B0082"),
-      rect(0, 0, 50, 1200, "Left Wall", 0, 0, "#4B0082"),
-      rect(0, 600, 900, 50, "Bottom Wall", 0, 0, "#4B0082"),
-      rect(450, 0, 50, 1200, "Right Wall", 0, 0, "#4B0082"),
+      rect(0, 0, canvasWidth*2, 50, "Top Wall", 0, 0, "#4B0082"),
+      rect(0, 0, 50, canvasHeight*2, "Left Wall", 0, 0, "#4B0082"),
+      rect(0, canvasHeight, canvasWidth*2, 50, "Bottom Wall", 0, 0, "#4B0082"),
+      rect(canvasWidth, 0, 50, canvasHeight*2, "Right Wall", 0, 0, "#4B0082"),
       rect(50, 450, 100, 20, "Left Ledge", 0, 10, "#4B0082"),
       rect(300, 450, 100, 20, "Right Ledge", 0, 10, "#4B0082"),
       rect(345, 575, 20, 750, "Ball Release wall", 0, 10, "#4B0082"),
       rect(390, 50, 5, 100, "Top Right angled wall", -45, 0, "#4B0082"),
+      rect(290, 520, 10, 150, "Bottom Right slope", 0.7, 0, "#4B0082"),
+      rect(55, 510, 10, 165, "Bottom Left slope", -0.6, 0, "#4B0082"),
       Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}})
     ]);
 
