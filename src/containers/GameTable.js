@@ -97,7 +97,7 @@ class GameTable extends Component {
   // Right Flipper:
     let rightFlipper = Bodies.trapezoid(215, 460, 20, 70, 0.23, {
       label: "Right Flipper",
-      isStatic: true,
+      // isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: -1.9,
       chamfer: {}});
@@ -123,10 +123,11 @@ class GameTable extends Component {
     //     rightFlipperUp = true;
     //   }
 
-      const keyPress = function (event){
+      const leftKeyPress = function (event){
         if(event.keyCode===37){
+          console.log("left flipper");
           Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
-  		    Matter.Body.setAngularVelocity(leftFlipper, 0.3);
+  		    Matter.Body.setAngularVelocity(leftFlipper, -0.10);
         };
       };
 
@@ -140,6 +141,14 @@ class GameTable extends Component {
     //     rightFlipperUp = false;
     //   }
     // }
+
+    const rightKeyPress = function (event){
+      if(event.keyCode===39){
+        console.log("right flipper");
+        Matter.Body.setVelocity(rightFlipper, { x: 0, y: 0});
+        Matter.Body.setAngularVelocity(rightFlipper, 0.10);
+      };
+    };
 
 
   //End of flipper creation
@@ -178,8 +187,8 @@ class GameTable extends Component {
 
     document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', launchPinball, false);
-    document.addEventListener('keydown', keyPress, false);
-    // document.addEventListener('keyup', keyRelease, false);
+    document.addEventListener('keydown', leftKeyPress, false);
+    document.addEventListener('keydown', rightKeyPress, false);
     });
 
     Engine.run(engine);
