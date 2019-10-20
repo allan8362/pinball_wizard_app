@@ -105,7 +105,7 @@ class GameTable extends Component {
 
 
     World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper, rightFlipper.hinge]);
-
+    console.log(leftFlipper);
     //Functionality needed for moving flippers when key is pressed
     //
 
@@ -145,6 +145,20 @@ class GameTable extends Component {
 
     document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', launchPinball, false);
+    });
+    var score = 0;
+
+    Matter.Events.on(engine, 'collisionStart', function(event) {
+      
+      console.log("Evento: ", event)
+      var pairs = event.pairs;
+      console.log("Pair no visible: ", pairs)
+      console.log("Pair visible: ", pairs[0]);
+      console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
+      if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
+        score += 10;
+        console.log("Score ", score);
+      }
     });
 
     Engine.run(engine);
