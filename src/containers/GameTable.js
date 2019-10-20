@@ -73,16 +73,16 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    let leftContainerTop = Bodies.circle(135, 400, 30, {isStatic: true});
-    let leftContainerBottom = Bodies.circle(155, 500, 30, {isStatic: true, render: {fillStyle: "#B22222"}});
+    // let leftContainerTop = Bodies.circle(135, 400, 30, {isStatic: true, visible: false});
+    // let leftContainerBottom = Bodies.circle(155, 500, 30, {isStatic: true, render: {fillStyle: "#B22222"}});
 
-    World.add(engine.world, [leftContainerTop, leftContainerBottom]);
+    // World.add(engine.world, [leftContainerTop, leftContainerBottom]);
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
     let leftFlipper = Bodies.trapezoid(135, 460, 20, 70, 0.23, {
       label: "Left Flipper",
-      isStatic: true,
+      // isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: 1.9,
       chamfer: {}}); //chamfer allows for rounded edges on the flippers
@@ -114,25 +114,32 @@ class GameTable extends Component {
 
     //Functionality needed for moving flippers when key is pressed
     //
-    function keyPress(e) {
-      if(e.key === "Left" || e.key === "ArrowLeft") {
-        console.log("left flipper up");
-        leftFlipperUp = true;
-      } else if (e.key === "Right" || e.key === "ArrowRight") {
-        console.log("right flipper up");
-        rightFlipperUp = true;
-      }
+    // function keyPress(e) {
+    //   if(e.key === "Left" || e.key === "ArrowLeft") {
+    //     console.log("left flipper up");
+    //     leftFlipperUp = true;
+    //   } else if (e.key === "Right" || e.key === "ArrowRight") {
+    //     console.log("right flipper up");
+    //     rightFlipperUp = true;
+    //   }
 
-    }
-    function keyRelease(e) {
-      if(e.key === "Left" || e.key === "ArrowLeft") {
-        console.log("left flipper down");
-        leftFlipperUp = false;
-      } else if(e.key === "Right" || e.key === "ArrowRight") {
-        console.log("right flipper down");
-        rightFlipperUp = false;
-      }
-    }
+      const keyPress = function (event){
+        if(event.keyCode===37){
+          Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
+  		    Matter.Body.setAngularVelocity(leftFlipper, 0.3);
+        };
+      };
+
+    // }
+    // function keyRelease(e) {
+    //   if(e.key === "Left" || e.key === "ArrowLeft") {
+    //     console.log("left flipper down");
+    //     leftFlipperUp = false;
+    //   } else if(e.key === "Right" || e.key === "ArrowRight") {
+    //     console.log("right flipper down");
+    //     rightFlipperUp = false;
+    //   }
+    // }
 
 
   //End of flipper creation
@@ -172,7 +179,7 @@ class GameTable extends Component {
     document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', launchPinball, false);
     document.addEventListener('keydown', keyPress, false);
-    document.addEventListener('keyup', keyRelease, false);
+    // document.addEventListener('keyup', keyRelease, false);
     });
 
     Engine.run(engine);
