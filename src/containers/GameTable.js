@@ -82,7 +82,7 @@ class GameTable extends Component {
   // (x, y, width, height, slope, [options])
     let leftFlipper = Bodies.trapezoid(135, 460, 20, 70, 0.23, {
       label: "Left Flipper",
-      // isStatic: true,
+      isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: 1.9,
       chamfer: {}}); //chamfer allows for rounded edges on the flippers
@@ -97,7 +97,7 @@ class GameTable extends Component {
   // Right Flipper:
     let rightFlipper = Bodies.trapezoid(215, 460, 20, 70, 0.23, {
       label: "Right Flipper",
-      // isStatic: true,
+      isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: -1.9,
       chamfer: {}});
@@ -113,16 +113,7 @@ class GameTable extends Component {
     World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper, rightFlipper.hinge]);
 
     //Functionality needed for moving flippers when key is pressed
-    //
-    // function keyPress(e) {
-    //   if(e.key === "Left" || e.key === "ArrowLeft") {
-    //     console.log("left flipper up");
-    //     leftFlipperUp = true;
-    //   } else if (e.key === "Right" || e.key === "ArrowRight") {
-    //     console.log("right flipper up");
-    //     rightFlipperUp = true;
-    //   }
-
+    // Left Flipper
       const leftKeyPress = function (event){
         if(event.keyCode===37){
           console.log("left flipper");
@@ -131,17 +122,7 @@ class GameTable extends Component {
         };
       };
 
-    // }
-    // function keyRelease(e) {
-    //   if(e.key === "Left" || e.key === "ArrowLeft") {
-    //     console.log("left flipper down");
-    //     leftFlipperUp = false;
-    //   } else if(e.key === "Right" || e.key === "ArrowRight") {
-    //     console.log("right flipper down");
-    //     rightFlipperUp = false;
-    //   }
-    // }
-
+    //Right Flipper
     const rightKeyPress = function (event){
       if(event.keyCode===39){
         console.log("right flipper");
@@ -149,8 +130,6 @@ class GameTable extends Component {
         Matter.Body.setAngularVelocity(rightFlipper, 0.10);
       };
     };
-
-
   //End of flipper creation
 
     // add mouse control
