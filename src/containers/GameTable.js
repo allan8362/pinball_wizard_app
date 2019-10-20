@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import Matter from "matter-js";
 // import DrawStatic from "../helpers/DrawStatic";
+import DrawFlippers from "../helpers/DrawFlippers.js";
 
 class GameTable extends Component {
   constructor(props) {
@@ -63,6 +64,38 @@ class GameTable extends Component {
     var bumper = Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}});
     console.log("bumper: ", bumper);
 // above can be removed later when finished debugging
+
+  //Creating the flippers
+  // Left Flipper:
+    //Containers top keep flipper in place so isStatic does not need to be used
+    //
+
+    // (x, y, width, height, slope, [options])
+    let leftFlipper = Bodies.trapezoid(135, 460, 20, 70, 0.23, {
+      label: "Left Flipper",
+      isStatic: true,
+      render: {fillStyle: "#B22222"},
+      angle: 1.9,
+      chamfer: {}}); //chamfer allows for rounded edges on the paddles
+
+  // Right Flipper:
+    //Containers top keep flipper in place so isStatic does not need to be used
+    //
+
+    let rightFlipper = Bodies.trapezoid(215, 460, 20, 70, 0.23, {
+      label: "Right Flipper",
+      isStatic: true,
+      render: {fillStyle: "#B22222"},
+      angle: -1.9,
+      chamfer: {}});
+
+
+    World.add(engine.world, [leftFlipper, rightFlipper]);
+
+    //Functionality for moving flippers when key is pressed
+    //
+
+  //end of flipper creation
 
     // add mouse control
     var mouse = Mouse.create(render.canvas),
