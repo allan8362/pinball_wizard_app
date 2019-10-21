@@ -23,8 +23,8 @@ class GameTable extends Component {
     var engine = Engine.create({});
     console.log("engine: ", engine);
 
-    const canvasWidth = 450;
-    const canvasHeight = 600;
+    const canvasWidth = 500;
+    const canvasHeight = 700;
 
     var render = Render.create({
       element: this.refs.game,
@@ -58,13 +58,18 @@ class GameTable extends Component {
       rect(0, 0, 50, canvasHeight*2, "Left Wall", 0, 0, "#4B0082"),
       rect(0, canvasHeight, canvasWidth*2, 50, "Bottom Wall", 0, 0, "#4B0082"),
       rect(canvasWidth, 0, 50, canvasHeight*2, "Right Wall", 0, 0, "#4B0082"),
-      rect(50, 450, 100, 20, "Left Ledge", 0, 10, "#4B0082"),
-      rect(300, 450, 100, 20, "Right Ledge", 0, 10, "#4B0082"),
-      rect(345, 575, 20, 750, "Ball Release wall", 0, 10, "#4B0082"),
-      rect(390, 50, 5, 100, "Top Right angled wall", -45, 0, "#4B0082"),
-      rect(290, 520, 10, 150, "Bottom Right slope", 0.7, 0, "#4B0082"),
-      rect(55, 510, 10, 165, "Bottom Left slope", -0.6, 0, "#4B0082"),
-      Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}})
+      rect(50, 550, 200, 20, "Left Ledge", 0, 10, "#4B0082"),
+      rect(360, 550, 150, 20, "Right Ledge", 0, 10, "#4B0082"),
+      rect(430, 575, 20, 750, "Ball Release wall", 0, 10, "#4B0082"),
+      rect(450, 45, 10, 85, "Top Right angled wall", -45, 0, "#4B0082"),
+      rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0, "#4B0082"),
+      rect(55, 610, 10, 165, "Bottom Left slope", -0.6, 0, "#4B0082"),
+      Bodies.circle(140, 140, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
+      Bodies.circle(200, 140, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
+      Bodies.circle(260, 140, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
+      Bodies.circle(170, 200, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
+      Bodies.circle(230, 200, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
+
     ]);
 
 // these var are NOT USED anywhere in game but using to log out options for rectangle
@@ -83,7 +88,7 @@ class GameTable extends Component {
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
-    let leftFlipper = Bodies.trapezoid(135, 460, 20, 70, 0.23, {
+    let leftFlipper = Bodies.trapezoid(183, 560, 20, 70, 0.23, {
       label: "Left Flipper",
       isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -91,14 +96,14 @@ class GameTable extends Component {
       chamfer: {}}); //chamfer allows for rounded edges on the flippers
 
   //Left flipper hinge
-    leftFlipper.hinge = Bodies.circle(107, 450, 2, {
+    leftFlipper.hinge = Bodies.circle(155, 550, 2, {
       label: "Left Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
     });
 
   // Right Flipper:
-    let rightFlipper = Bodies.trapezoid(215, 460, 20, 70, 0.23, {
+    let rightFlipper = Bodies.trapezoid(252, 560, 20, 70, 0.23, {
       label: "Right Flipper",
       isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -106,7 +111,7 @@ class GameTable extends Component {
       chamfer: {}});
 
   //Right flipper hinge
-    rightFlipper.hinge = Bodies.circle(242, 450, 2, {
+    rightFlipper.hinge = Bodies.circle(280, 551, 2, {
       label: "Left Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
@@ -121,7 +126,7 @@ class GameTable extends Component {
         if(event.keyCode===37){
           console.log("left flipper");
           Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
-  		    Matter.Body.setAngularVelocity(leftFlipper, -0.10);
+  		    Matter.Body.setAngularVelocity(leftFlipper, -0.5);
         };
       };
 
@@ -130,7 +135,7 @@ class GameTable extends Component {
       if(event.keyCode===39){
         console.log("right flipper");
         Matter.Body.setVelocity(rightFlipper, { x: 0, y: 0});
-        Matter.Body.setAngularVelocity(rightFlipper, 0.10);
+        Matter.Body.setAngularVelocity(rightFlipper, 0.5);
       };
     };
   //End of flipper creation
@@ -156,7 +161,7 @@ class GameTable extends Component {
 
     var ballOptions = {restitution: 0.5, label: "Pinball", render: {fillStyle: "#C0C0C0"}}
     // circles - x, y, radius, {options}
-    var pinball = Bodies.circle(390, 540, 20, ballOptions);
+    var pinball = Bodies.circle(440, 540, 10, ballOptions);
     console.log("Pinball: ", pinball);
 
     const launchPinball = function (event){
