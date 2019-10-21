@@ -33,7 +33,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        // wireframes:  false,
+        wireframes:  false,
         background: "#E0FFFF",
       }
     });
@@ -46,7 +46,7 @@ class GameTable extends Component {
         friction: 0,
         label: label,
         angle: angle,
-        chamfer :{ radius: chamferRadius},
+        chamfer: {radius: chamferRadius},
         render: {fillStyle: "#4B0082"}
       });
     }
@@ -54,8 +54,19 @@ class GameTable extends Component {
     function bumper(x, y, radius, label, color){
       return Bodies.circle(x, y, radius, {
         isStatic: true,
+        restitution: 1,
         label: label,
         render: {fillStyle: color}
+      });
+    }
+
+    function polygon(x, y, sides, radius, angle, label, chamferRadius){
+      return Bodies.polygon(x, y, sides, radius, {
+        isStatic: true,
+        angle: angle,
+        label: label,
+        chamfer: {radius: chamferRadius},
+        render: {fillStyle: "#4B0082"}
       });
     }
 
@@ -70,14 +81,16 @@ class GameTable extends Component {
       rect(85, canvasHeight-150, 150, 20, "Left Ledge", 0.4, 10),
       rect(360, canvasHeight-150, 150, 20, "Right Ledge", -0.4, 10),
       rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
-      rect(450, 45, 10, 85, "Top Right angled wall", -0.72, 0),
+      // rect(450, 45, 10, 85, "Top Right angled wall", -0.72, 0),
       // rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0),
       // rect(55, 610, 10, 165, "Bottom Left slope", -0.6, 0),
       bumper(140, 140, 15, "Red Bumper", "#B22222"),
       bumper(200, 140, 15, "Red Bumper", "#B22222"),
       bumper(260, 140, 15, "Red Bumper", "#B22222"),
       bumper(170, 200, 15, "Blue Bumper", "#0000FF"),
-      bumper(230, 200, 15, "Red Bumper", "#B22222")
+      bumper(230, 200, 15, "Red Bumper", "#B22222"),
+      polygon(35, 35, 3, 40, 0.8, "Top Left Bumper", 0),
+      polygon(470, 35, 3, 40, 0.3, "Top Right Bumper", 0)
     ]);
 
 // these var are NOT USED anywhere in game but using to log out options for rectangle
@@ -169,7 +182,7 @@ class GameTable extends Component {
 
     var ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#C0C0C0"}}
     // circles - x, y, radius, {options}
-    var pinball = Bodies.circle(440, 540, 10, ballOptions);
+    var pinball = Bodies.circle(450, 650, 10, ballOptions);
     console.log("Pinball: ", pinball);
 
     const launchPinball = function (event){
@@ -187,11 +200,11 @@ class GameTable extends Component {
     });
 
     Matter.Events.on(engine, 'collisionStart', function(event) {
-      // console.log("Event: ", event)
+      console.log("Event: ", event)
       var pairs = event.pairs;
-      // console.log("Pair no visible: ", pairs)
-      // console.log("Pair visible: ", pairs[0]);
-      // console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
+      console.log("Pair no visible: ", pairs)
+      console.log("Pair visible: ", pairs[0]);
+      console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
       if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
         score += 10;
         console.log("Hit red bumper!");
