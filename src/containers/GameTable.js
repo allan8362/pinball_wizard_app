@@ -149,7 +149,7 @@ class GameTable extends Component {
     var score = 0;
 
     Matter.Events.on(engine, 'collisionStart', function(event) {
-      
+
       console.log("Evento: ", event)
       var pairs = event.pairs;
       console.log("Pair no visible: ", pairs)
