@@ -21,10 +21,11 @@ class GameTable extends Component {
       Constraint = Matter.Constraint;
 
     var engine = Engine.create({});
-    console.log("engine: ", engine);
+    console.log("Engine: ", engine);
 
     const canvasWidth = 500;
     const canvasHeight = 700;
+    var score = 0;
 
     var render = Render.create({
       element: this.refs.game,
@@ -34,19 +35,38 @@ class GameTable extends Component {
         height: canvasHeight,
         wireframes: true,
         background: "#E0FFFF",
-        currentbackground: "#E0FFFF"
       }
     });
-    console.log("render:", render);
+    console.log("Render:", render);
 
     function rect(x, y, width, height, label, angle, chamferRadius, color){
       return Bodies.rectangle(x, y, width, height, {
         isStatic: true,
         restitution: 1,
+        friction: 0,
         label: label,
         angle: angle,
-        chamfer :{ radius: chamferRadius},
+        chamfer: {radius: chamferRadius},
+        render: {fillStyle: "#4B0082"}
+      });
+    }
+
+    function bumper(x, y, radius, label, color){
+      return Bodies.circle(x, y, radius, {
+        isStatic: true,
+        restitution: 1,
+        label: label,
         render: {fillStyle: color}
+      });
+    }
+
+    function polygon(x, y, sides, radius, angle, label, chamferRadius){
+      return Bodies.polygon(x, y, sides, radius, {
+        isStatic: true,
+        angle: angle,
+        label: label,
+        chamfer: {radius: chamferRadius},
+        render: {fillStyle: "#4B0082"}
       });
     }
 
@@ -54,29 +74,30 @@ class GameTable extends Component {
     let rightFlipperUp = false;
 
     World.add(engine.world, [
-      rect(0, 0, canvasWidth*2, 50, "Top Wall", 0, 0, "#4B0082"),
-      rect(0, 0, 50, canvasHeight*2, "Left Wall", 0, 0, "#4B0082"),
-      rect(0, canvasHeight, canvasWidth*2, 50, "Bottom Wall", 0, 0, "#4B0082"),
-      rect(canvasWidth, 0, 50, canvasHeight*2, "Right Wall", 0, 0, "#4B0082"),
-      rect(50, 550, 200, 20, "Left Ledge", 0, 10, "#4B0082"),
-      rect(360, 550, 150, 20, "Right Ledge", 0, 10, "#4B0082"),
-      rect(430, 575, 20, 750, "Ball Release wall", 0, 10, "#4B0082"),
-      rect(450, 45, 10, 85, "Top Right angled wall", -45, 0, "#4B0082"),
-      rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0, "#4B0082"),
-      rect(55, 610, 10, 165, "Bottom Left slope", -0.6, 0, "#4B0082"),
-      Bodies.circle(140, 140, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
-      Bodies.circle(200, 140, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
-      Bodies.circle(260, 140, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
-      Bodies.circle(170, 200, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
-      Bodies.circle(230, 200, 15, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}}),
-
+      rect(canvasWidth/2, 0, canvasWidth, 50, "Top Wall", 0, 0),
+      rect(0, canvasHeight/2, 50, canvasHeight, "Left Wall", 0, 0),
+      rect(460, canvasHeight, 60, 50, "Bottom Release Wall", 0, 0),
+      rect(canvasWidth, canvasHeight/2, 50, canvasHeight, "Right Wall", 0, 0),
+      rect(85, canvasHeight-150, 150, 20, "Left Ledge", 0.4, 10),
+      rect(360, canvasHeight-150, 150, 20, "Right Ledge", -0.4, 10),
+      rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
+      // rect(450, 45, 10, 85, "Top Right angled wall", -0.72, 0),
+      // rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0),
+      // rect(55, 610, 10, 165, "Bottom Left slope", -0.6, 0),
+      bumper(140, 140, 15, "Red Bumper", "#B22222"),
+      bumper(200, 140, 15, "Red Bumper", "#B22222"),
+      bumper(260, 140, 15, "Red Bumper", "#B22222"),
+      bumper(170, 200, 15, "Blue Bumper", "#0000FF"),
+      bumper(230, 200, 15, "Red Bumper", "#B22222"),
+      polygon(35, 35, 3, 40, 0.8, "Top Left Bumper", 0),
+      polygon(470, 35, 3, 40, 0.3, "Top Right Bumper", 0)
     ]);
 
 // these var are NOT USED anywhere in game but using to log out options for rectangle
     var triangleWall = rect(345, 30, 5, 250, "Triangle Wall", 0, 0, "#000");
     console.log("Rectangle: ", triangleWall);
-    var bumper = Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}});
-    console.log("bumper: ", bumper);
+    var bumperRed = bumper(140, 140, 50, "Red Bumper", "#B22222");
+    console.log("Bumper: ", bumperRed);
 // above can be removed later when finished debugging
 
   //Creating the flippers
@@ -93,7 +114,7 @@ class GameTable extends Component {
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
-    let leftFlipper = Bodies.trapezoid(183, 560, 20, 70, 0.23, {
+    let leftFlipper = Bodies.trapezoid(190, 600, 20, 70, 0.23, {
       label: "Left Flipper",
       // isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -118,7 +139,7 @@ class GameTable extends Component {
     // Body.rotate(leftFlipper, -0.5) {}
 
   // Right Flipper:
-    let rightFlipper = Bodies.trapezoid(252, 560, 20, 70, 0.23, {
+    let rightFlipper = Bodies.trapezoid(252, 600, 20, 70, 0.23, {
       label: "Right Flipper",
       // isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -183,9 +204,9 @@ class GameTable extends Component {
       console.log("y: ", event.mouse.position.y);
     });
 
-    var ballOptions = {restitution: 0.5, label: "Pinball", render: {fillStyle: "#C0C0C0"}}
+    var ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#C0C0C0"}}
     // circles - x, y, radius, {options}
-    var pinball = Bodies.circle(440, 540, 10, ballOptions);
+    var pinball = Bodies.circle(450, 650, 10, ballOptions);
     console.log("Pinball: ", pinball);
 
     const launchPinball = function (event){
@@ -201,24 +222,27 @@ class GameTable extends Component {
     document.addEventListener('keydown', leftKeyPress, false);
     document.addEventListener('keydown', rightKeyPress, false);
     });
-    var score = 0;
 
     Matter.Events.on(engine, 'collisionStart', function(event) {
-
-      console.log("Evento: ", event)
+      console.log("Event: ", event)
       var pairs = event.pairs;
       console.log("Pair no visible: ", pairs)
       console.log("Pair visible: ", pairs[0]);
       console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
       if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
         score += 10;
+        console.log("Hit red bumper!");
+        console.log("Score ", score);
+      }
+      if(pairs[0].bodyA.label==="Blue Bumper" && pairs[0].bodyB.label==="Pinball"){
+        score += 50;
+        console.log("Hit blue bumper!");
         console.log("Score ", score);
       }
     });
 
     Engine.run(engine);
     Render.run(render);
-    console.log("Bumper totalContacts: ", bumper.parent.totalContacts);
   }
 
   render() {
