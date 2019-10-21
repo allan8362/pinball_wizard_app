@@ -1,23 +1,35 @@
 import React, {Component} from "react";
 import Matter from 'matter-js';
 
-class DrawFlippers extends Component {
-  //Same issue as with DrawStatic.js - nothing showing in GameTable so code in there now
-  drawLeftFlipper() {
+class DrawFlippers {
 
-    console.log("Flipper Helper!");
-    var Engine = Matter.Engine;
-    var World = Matter.World;
-    var Bodies = Matter.Bodies;
-    var Body = Matter.Body;
-    var engine = Engine.create({});
+  movePaddles() {
+    let leftFlipperUp = false;
+    let rightFlipperUp = false;
 
-    // (x, y, width, height, slope, [options])
-    let leftFlipper = Bodies.rectangle(100, 200, 100, 20, {fillStyle: "#000000"});
-    console.log("left flipper");
 
-    World.add(engine.world, leftFlipper);
+
+    function keyPress(e) {
+      if(e.key === "Left" || e.key === "ArrowLeft") {
+        console.log("left flipper up");
+        leftFlipperUp = true;
+      } else if (e.key === "Right" || e.key === "ArrowRight") {
+        console.log("right flipper up");
+        rightFlipperUp = true;
+      }
+    }
+
+    function keyRelease(e) {
+      if(e.key === "Left" || e.key === "ArrowLeft") {
+        console.log("left flipper down");
+        leftFlipperUp = false;
+      } else if(e.key === "Right" || e.key === "ArrowRight") {
+        console.log("right flipper down");
+        rightFlipperUp = false;
+      }
+    }
   }
 }
+
 
 export default DrawFlippers;
