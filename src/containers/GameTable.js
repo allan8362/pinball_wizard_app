@@ -81,10 +81,13 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    let leftContainerTop = Bodies.circle(190, 475, 40, {isStatic: true, render: {visible: false}});
-    let leftContainerBottom = Bodies.circle(215, 600, 30, {isStatic: true,
-      render: {fillStyle: "#B22222", visible: false}});
-    let rightContainerTop = Bodies.circle(250, 475, 40, {isStatic: true, render: {visible: false}});
+    let leftContainerTop = Bodies.circle(190, 475, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
+    let rightContainerTop = Bodies.circle(250, 475, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
+    let leftContainerBottom = Bodies.circle(215, 655, 80, {isStatic: true,
+      render: {fillStyle: "#B22222", visible: true}, collisionFilter: {category: 1, group: 0}});
+
+
+
 
     World.add(engine.world, [leftContainerTop, leftContainerBottom, rightContainerTop]);
 
