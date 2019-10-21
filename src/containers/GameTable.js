@@ -23,12 +23,15 @@ class GameTable extends Component {
     var engine = Engine.create({});
     console.log("engine: ", engine);
 
+    const canvasWidth = 450;
+    const canvasHeight = 600;
+
     var render = Render.create({
       element: this.refs.game,
       engine: engine,
       options: {
-        width: 450,
-        height: 600,
+        width: canvasWidth,
+        height: canvasHeight,
         wireframes: false,
         background: "#E0FFFF",
         currentbackground: "#E0FFFF"
@@ -36,36 +39,36 @@ class GameTable extends Component {
     });
     console.log("render:", render);
 
-    var wallOptions = { isStatic: true, render: {fillStyle: "#4B0082"}};
+    function rect(x, y, width, height, label, angle, chamferRadius, color){
+      return Bodies.rectangle(x, y, width, height, {
+        isStatic: true,
+        restitution: 1,
+        label: label,
+        angle: angle,
+        chamfer :{ radius: chamferRadius},
+        render: {fillStyle: color}
+      });
+    }
 
     let leftFlipperUp = false;
     let rightFlipperUp = false;
 
     World.add(engine.world, [
-      // walls - x, y, width, height, {options}
-      // Top
-      Bodies.rectangle(0, 0, 900, 50, wallOptions),
-      // Left
-      Bodies.rectangle(0, 0, 50, 1200, wallOptions),
-      // Bottom
-      Bodies.rectangle(0, 600, 900, 50, wallOptions),
-      // Right
-      Bodies.rectangle(450, 0, 50, 1200, wallOptions),
-      // Left Ledge
-      Bodies.rectangle(50, 450, 100, 20, wallOptions),
-      // Right Ledge
-      Bodies.rectangle(300, 450, 100, 20, wallOptions),
-      // Ball Release wall
-      Bodies.rectangle(345, 575, 20, 750, wallOptions),
-      // Top right angled wall
-      Bodies.rectangle(345, 30, 5, 250, {angle: -45, isStatic: true, render: {fillStyle: "#4B0082"}}),
-      // Bumper
+      rect(0, 0, canvasWidth*2, 50, "Top Wall", 0, 0, "#4B0082"),
+      rect(0, 0, 50, canvasHeight*2, "Left Wall", 0, 0, "#4B0082"),
+      rect(0, canvasHeight, canvasWidth*2, 50, "Bottom Wall", 0, 0, "#4B0082"),
+      rect(canvasWidth, 0, 50, canvasHeight*2, "Right Wall", 0, 0, "#4B0082"),
+      rect(50, 450, 100, 20, "Left Ledge", 0, 10, "#4B0082"),
+      rect(300, 450, 100, 20, "Right Ledge", 0, 10, "#4B0082"),
+      rect(345, 575, 20, 750, "Ball Release wall", 0, 10, "#4B0082"),
+      rect(390, 50, 5, 100, "Top Right angled wall", -45, 0, "#4B0082"),
+      rect(290, 520, 10, 150, "Bottom Right slope", 0.7, 0, "#4B0082"),
+      rect(55, 510, 10, 165, "Bottom Left slope", -0.6, 0, "#4B0082"),
       Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}})
     ]);
 
 // these var are NOT USED anywhere in game but using to log out options for rectangle
-    wallOptions.label = "Triangle Wall";
-    var triangleWall = Bodies.rectangle(345, 30, 5, 250, wallOptions);
+    var triangleWall = rect(345, 30, 5, 250, "Triangle Wall", 0, 0, "#000");
     console.log("Rectangle: ", triangleWall);
     var bumper = Bodies.circle(140, 140, 50, {isStatic: true, label: "Red Bumper", render: {fillStyle: "#B22222"}});
     console.log("bumper: ", bumper);
@@ -111,7 +114,7 @@ class GameTable extends Component {
 
 
     World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper, rightFlipper.hinge]);
-
+    console.log(leftFlipper);
     //Functionality needed for moving flippers when key is pressed
     // Left Flipper
       const leftKeyPress = function (event){
@@ -168,6 +171,20 @@ class GameTable extends Component {
     document.addEventListener('keydown', launchPinball, false);
     document.addEventListener('keydown', leftKeyPress, false);
     document.addEventListener('keydown', rightKeyPress, false);
+    });
+    var score = 0;
+
+    Matter.Events.on(engine, 'collisionStart', function(event) {
+
+      console.log("Evento: ", event)
+      var pairs = event.pairs;
+      console.log("Pair no visible: ", pairs)
+      console.log("Pair visible: ", pairs[0]);
+      console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
+      if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
+        score += 10;
+        console.log("Score ", score);
+      }
     });
 
     Engine.run(engine);
