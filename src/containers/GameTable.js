@@ -33,7 +33,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        wireframes: true,
+        wireframes: false,
         background: "#E0FFFF",
       }
     });
@@ -102,9 +102,9 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    let leftContainerTop = Bodies.circle(190, 475, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
-    let rightContainerTop = Bodies.circle(250, 475, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
-    let leftContainerBottom = Bodies.circle(215, 655, 80, {isStatic: true,
+    let leftContainerTop = Bodies.circle(190, 510, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
+    let rightContainerTop = Bodies.circle(250, 510, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
+    let leftContainerBottom = Bodies.circle(215, 700, 80, {isStatic: true,
       render: {fillStyle: "#B22222", visible: true}, collisionFilter: {category: 1, group: 0}});
 
 
@@ -114,7 +114,7 @@ class GameTable extends Component {
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
-    let leftFlipper = Bodies.trapezoid(190, 600, 20, 70, 0.23, {
+    let leftFlipper = Bodies.trapezoid(153, 690, 20, 70, 0.23, {
       label: "Left Flipper",
       // isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -122,7 +122,7 @@ class GameTable extends Component {
       chamfer: {}}); //chamfer allows for rounded edges on the flippers
 
   //Left flipper hinge
-    leftFlipper.hinge = Bodies.circle(153, 550, 2, {
+    leftFlipper.hinge = Bodies.circle(162, 585, 2, {
       label: "Left Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
@@ -147,7 +147,7 @@ class GameTable extends Component {
       chamfer: {}});
 
   //Right flipper hinge
-    rightFlipper.hinge = Bodies.circle(280, 551, 2, {
+    rightFlipper.hinge = Bodies.circle(284, 585, 2, {
       label: "Right Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
