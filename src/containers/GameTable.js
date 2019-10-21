@@ -15,8 +15,10 @@ class GameTable extends Component {
       Render = Matter.Render,
       World = Matter.World,
       Bodies = Matter.Bodies,
+      Body = Matter.Body,
       Mouse = Matter.Mouse,
-      MouseConstraint = Matter.MouseConstraint;
+      MouseConstraint = Matter.MouseConstraint,
+      Constraint = Matter.Constraint;
 
     var engine = Engine.create({});
     console.log("engine: ", engine);
@@ -48,6 +50,9 @@ class GameTable extends Component {
       });
     }
 
+    let leftFlipperUp = false;
+    let rightFlipperUp = false;
+
     World.add(engine.world, [
       rect(0, 0, canvasWidth*2, 50, "Top Wall", 0, 0, "#4B0082"),
       rect(0, 0, 50, canvasHeight*2, "Left Wall", 0, 0, "#4B0082"),
@@ -71,6 +76,10 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
+    // let leftContainerTop = Bodies.circle(135, 400, 30, {isStatic: true, visible: false});
+    // let leftContainerBottom = Bodies.circle(155, 500, 30, {isStatic: true, render: {fillStyle: "#B22222"}});
+
+    // World.add(engine.world, [leftContainerTop, leftContainerBottom]);
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
@@ -79,7 +88,7 @@ class GameTable extends Component {
       isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: 1.9,
-      chamfer: {}}); //chamfer allows for rounded edges on the paddles
+      chamfer: {}}); //chamfer allows for rounded edges on the flippers
 
   //Left flipper hinge
     leftFlipper.hinge = Bodies.circle(107, 450, 2, {
@@ -107,8 +116,23 @@ class GameTable extends Component {
     World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper, rightFlipper.hinge]);
     console.log(leftFlipper);
     //Functionality needed for moving flippers when key is pressed
-    //
+    // Left Flipper
+      const leftKeyPress = function (event){
+        if(event.keyCode===37){
+          console.log("left flipper");
+          Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
+  		    Matter.Body.setAngularVelocity(leftFlipper, -0.10);
+        };
+      };
 
+    //Right Flipper
+    const rightKeyPress = function (event){
+      if(event.keyCode===39){
+        console.log("right flipper");
+        Matter.Body.setVelocity(rightFlipper, { x: 0, y: 0});
+        Matter.Body.setAngularVelocity(rightFlipper, 0.10);
+      };
+    };
   //End of flipper creation
 
     // add mouse control
@@ -145,6 +169,8 @@ class GameTable extends Component {
 
     document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', launchPinball, false);
+    document.addEventListener('keydown', leftKeyPress, false);
+    document.addEventListener('keydown', rightKeyPress, false);
     });
     var score = 0;
 
