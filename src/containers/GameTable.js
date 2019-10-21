@@ -33,7 +33,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        wireframes:  false,
+        wireframes: true,
         background: "#E0FFFF",
       }
     });
@@ -102,45 +102,69 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    // let leftContainerTop = Bodies.circle(135, 400, 30, {isStatic: true, visible: false});
-    // let leftContainerBottom = Bodies.circle(155, 500, 30, {isStatic: true, render: {fillStyle: "#B22222"}});
+    let leftContainerTop = Bodies.circle(190, 475, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
+    let rightContainerTop = Bodies.circle(250, 475, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
+    let leftContainerBottom = Bodies.circle(215, 655, 80, {isStatic: true,
+      render: {fillStyle: "#B22222", visible: true}, collisionFilter: {category: 1, group: 0}});
 
-    // World.add(engine.world, [leftContainerTop, leftContainerBottom]);
+
+
+
+    World.add(engine.world, [leftContainerTop, leftContainerBottom, rightContainerTop]);
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
     let leftFlipper = Bodies.trapezoid(190, 600, 20, 70, 0.23, {
       label: "Left Flipper",
-      isStatic: true,
+      // isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: 1.9,
       chamfer: {}}); //chamfer allows for rounded edges on the flippers
 
   //Left flipper hinge
-    leftFlipper.hinge = Bodies.circle(165, 590, 2, {
+    leftFlipper.hinge = Bodies.circle(153, 550, 2, {
       label: "Left Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
     });
+  //Hold flipper in place
+    leftFlipper.constraint = Constraint.create ({
+      bodyA: leftFlipper,
+      pointA: {x:-23.7, y: 0},
+      bodyB: leftFlipper.hinge,
+      length: 0,
+      stiffness: 0
+    });
+
+    // Body.rotate(leftFlipper, -0.5) {}
 
   // Right Flipper:
     let rightFlipper = Bodies.trapezoid(252, 600, 20, 70, 0.23, {
       label: "Right Flipper",
-      isStatic: true,
+      // isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: -1.9,
       chamfer: {}});
 
   //Right flipper hinge
-    rightFlipper.hinge = Bodies.circle(280, 590, 2, {
-      label: "Left Flipper Hinge",
+    rightFlipper.hinge = Bodies.circle(280, 551, 2, {
+      label: "Right Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
     });
 
+    //Hold flipper in place
+      rightFlipper.constraint = Constraint.create ({
+        bodyA: rightFlipper,
+        pointA: {x:23.7, y: 0},
+        bodyB: rightFlipper.hinge,
+        length: 0,
+        stiffness: 0
+      });
 
-    World.add(engine.world, [leftFlipper, leftFlipper.hinge, rightFlipper, rightFlipper.hinge]);
-    console.log("Left Flipper: ", leftFlipper);
+
+    World.add(engine.world, [leftFlipper, leftFlipper.hinge, leftFlipper.constraint, rightFlipper, rightFlipper.hinge, rightFlipper.constraint]);
+    console.log(leftFlipper);
     //Functionality needed for moving flippers when key is pressed
     // Left Flipper
       const leftKeyPress = function (event){
