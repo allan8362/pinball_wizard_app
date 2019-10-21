@@ -32,7 +32,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        wireframes: false,
+        wireframes: true,
         background: "#E0FFFF",
         currentbackground: "#E0FFFF"
       }
@@ -81,11 +81,12 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    let leftContainerTop = Bodies.circle(200, 475, 40, {isStatic: true, render: {visible: false}});
-    let leftContainerBottom = Bodies.circle(210, 600, 30, {isStatic: true,
+    let leftContainerTop = Bodies.circle(190, 475, 40, {isStatic: true, render: {visible: false}});
+    let leftContainerBottom = Bodies.circle(215, 600, 30, {isStatic: true,
       render: {fillStyle: "#B22222", visible: false}});
+    let rightContainerTop = Bodies.circle(250, 475, 40, {isStatic: true, render: {visible: false}});
 
-    World.add(engine.world, [leftContainerTop, leftContainerBottom]);
+    World.add(engine.world, [leftContainerTop, leftContainerBottom, rightContainerTop]);
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
@@ -116,7 +117,7 @@ class GameTable extends Component {
   // Right Flipper:
     let rightFlipper = Bodies.trapezoid(252, 560, 20, 70, 0.23, {
       label: "Right Flipper",
-      isStatic: true,
+      // isStatic: true,
       render: {fillStyle: "#B22222"},
       angle: -1.9,
       chamfer: {}});
@@ -128,8 +129,17 @@ class GameTable extends Component {
       render: {fillStyle: "#ffffff"}
     });
 
+    //Hold flipper in place
+      rightFlipper.constraint = Constraint.create ({
+        bodyA: rightFlipper,
+        pointA: {x:23.7, y: 0},
+        bodyB: rightFlipper.hinge,
+        length: 0,
+        stiffness: 0
+      });
 
-    World.add(engine.world, [leftFlipper, leftFlipper.hinge, leftFlipper.constraint, rightFlipper, rightFlipper.hinge]);
+
+    World.add(engine.world, [leftFlipper, leftFlipper.hinge, leftFlipper.constraint, rightFlipper, rightFlipper.hinge, rightFlipper.constraint]);
     console.log(leftFlipper);
     //Functionality needed for moving flippers when key is pressed
     // Left Flipper
