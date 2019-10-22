@@ -87,10 +87,11 @@ class GameTable extends Component {
       bumper(164, 135, 15, "Red Bumper", "#B22222"), //top left
       bumper(canvasWidth/2.2, 135, 15, "Blue Bumper", "#0000FF"), //top middle
       bumper(290, 135, 15, "Red Bumper", "#B22222"), //top right
-      bumper(164, 200, 15, "red Bumper", "##B22222"), //middle left
+      bumper(164, 200, 15, "Red Bumper", "##B22222"), //middle left
       bumper(290, 200, 15, "Red Bumper", "#B22222"), //middle right
       bumper(164, 265, 15, "Red Bumper", "#B22222"), //bottom left
       bumper(canvasWidth/2.2, 265, 15, "Red Bumper", "#B22222"), // middle bottom
+      bumper(290, 265, 15, "Red Bumper", "#B22222"), //bottom right left
       polygon(35, 35, 3, 40, 0.8, "Top Left Bumper", 0),
       polygon(470, 35, 3, 40, 0.3, "Top Right Bumper", 0)
     ]);
@@ -211,10 +212,15 @@ class GameTable extends Component {
       chamfer: {radius: 20}
       });
 
+    // Center polygon bumper
+    let centerPolyBumper = Bodies.polygon(227, canvasHeight-500, 8, 35, {
+      label: "Middle Bumper",
+      isStatic: true,
+      render: {fillStyle: "#4B0082"},
+      chamfer: {radius: 10}
+      });
 
-    World.add(engine.world, [bottomLeftBumper, bottomRightBumper, middleLeftBumper, middleRightBumper]);
-
-
+    World.add(engine.world, [bottomLeftBumper, bottomRightBumper, middleLeftBumper, middleRightBumper, centerPolyBumper]);
   // End of create bumpers
 
 // add mouse control
