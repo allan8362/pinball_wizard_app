@@ -91,6 +91,7 @@ class GameTable extends Component {
       bumper(290, 200, 15, "Red Bumper", "#B22222"), //middle right
       bumper(164, 265, 15, "Red Bumper", "#B22222"), //bottom left
       bumper(canvasWidth/2.2, 265, 15, "Red Bumper", "#B22222"), // middle bottom
+      bumper(290, 265, 15, "Red Bumper", "#B22222"), //bottom right left
       polygon(35, 35, 3, 40, 0.8, "Top Left Bumper", 0),
       polygon(470, 35, 3, 40, 0.3, "Top Right Bumper", 0)
     ]);
