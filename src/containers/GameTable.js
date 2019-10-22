@@ -8,7 +8,12 @@ class GameTable extends Component {
     this.state = {
       player: "Bob",
       score: 0,
-      lives: 3
+      lives: 1,
+      highScores: [{
+        id: 1,
+        player: "Tommy",
+        score: 8000
+      }]
     }
 
   }
@@ -170,7 +175,6 @@ class GameTable extends Component {
         // Left Flipper
         const leftKeyPress = function (event){
           if(event.keyCode===37){
-            // console.log("left flipper");
             Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
             Matter.Body.setAngularVelocity(leftFlipper, -0.45);
           };
@@ -179,7 +183,6 @@ class GameTable extends Component {
         //Right Flipper
         const rightKeyPress = function (event){
           if(event.keyCode===39){
-            // console.log("right flipper");
             Matter.Body.setVelocity(rightFlipper, { x: 0, y: 0});
             Matter.Body.setAngularVelocity(rightFlipper, 0.45);
           };
@@ -265,10 +268,9 @@ class GameTable extends Component {
           document.addEventListener('keydown', leftKeyPress, false);
           document.addEventListener('keydown', rightKeyPress, false);
         });
-        // End of OTHER event listeners
+      // End of OTHER event listeners
 
-
-        // START of Scoring Functions
+      // START of Scoring Functions
         const scoreUpdate = (scoreEvent) => {
           if(scoreEvent==="Red"){
             this.setState(prevState => {
@@ -295,14 +297,17 @@ class GameTable extends Component {
             return {lives: prevState.lives - 1}
           });
           if(this.state.lives===0){
-            console.log("Game over!!!!");
-          } else {
-            console.log("Keep going");
-            // World.add(engine.world, [pinball]);
-            // Matter.Body.setVelocity(pinball, { x: 0, y: -30});
-            // Matter.Body.setAngularVelocity(pinball, 0);
-          }
+            const newScore = {
+              id: Date.now(),
+              player: this.state.player,
+              score: this.state.score
+            }
+            const updatedHighScores = [...this.state.highScores, newScore]
+            this.setState({highScores: updatedHighScores})
+            alert('Game Over! You scored ' + this.state.score + ' points!');
+            document.location.reload();
 
+          } 
         };
 
         Matter.Events.on(engine, 'collisionStart', function(event) {
