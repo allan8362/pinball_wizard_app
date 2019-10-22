@@ -84,11 +84,13 @@ class GameTable extends Component {
       rect(90, canvasHeight-150, 165, 20, "Left Ledge", 0.4, 10),
       rect(360, canvasHeight-150, 165, 20, "Right Ledge", -0.4, 10),
       rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
-      bumper(140, 140, 15, "Red Bumper", "#B22222"),
-      bumper(200, 140, 15, "Red Bumper", "#B22222"),
-      bumper(260, 140, 15, "Red Bumper", "#B22222"),
-      bumper(170, 200, 15, "Blue Bumper", "#0000FF"),
-      bumper(230, 200, 15, "Red Bumper", "#B22222"),
+      bumper(164, 135, 15, "Red Bumper", "#B22222"), //top left
+      bumper(canvasWidth/2.2, 135, 15, "Blue Bumper", "#0000FF"), //top middle
+      bumper(290, 135, 15, "Red Bumper", "#B22222"), //top right
+      bumper(164, 200, 15, "red Bumper", "##B22222"), //middle left
+      bumper(290, 200, 15, "Red Bumper", "#B22222"), //middle right
+      bumper(164, 265, 15, "Red Bumper", "#B22222"), //bottom left
+      bumper(canvasWidth/2.2, 265, 15, "Red Bumper", "#B22222"), // middle bottom
       polygon(35, 35, 3, 40, 0.8, "Top Left Bumper", 0),
       polygon(470, 35, 3, 40, 0.3, "Top Right Bumper", 0)
     ]);
@@ -214,7 +216,7 @@ class GameTable extends Component {
 
 
   // End of create bumpers
-    
+
 // add mouse control
 
     var mouse = Mouse.create(render.canvas),
