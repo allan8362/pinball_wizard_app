@@ -7,3 +7,28 @@
   color: #fff;
   font-weight: bold;
 }
+
+.nav {
+  /* background-color: #4B0082; */
+  color: #B22222;
+  list-style: none;
+  display: flex;
+}
+
+a:visited {
+  color: #B22222;
+}
+
+p, li {
+  color: #B22222;
+  font-size: 25px;
+}
+
+li {
+  padding-left: 70px;
+}
+
+body {
+  font-family: fantasy;
+  display: inline-grid;
+}
