@@ -9,10 +9,18 @@
 }
 
 .nav {
-  /* background-color: #4B0082; */
   color: #B22222;
   list-style: none;
   display: flex;
+}
+
+ul.nav {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul {
+  list-style: none;
 }
 
 a:visited {
@@ -21,7 +29,6 @@ a:visited {
 
 p, li {
   color: #B22222;
-  font-size: 25px;
 }
 
 li {
@@ -29,6 +36,6 @@ li {
 }
 
 body {
+  background-color: #E0FFFF;
   font-family: fantasy;
-  display: inline-grid;
 }
