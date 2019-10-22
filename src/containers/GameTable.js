@@ -38,7 +38,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        wireframes: true,
+        wireframes: false,
         background: "#E0FFFF",
       }
     });
@@ -182,6 +182,38 @@ class GameTable extends Component {
       };
     };
   //End of flipper creation
+
+  //Create bumpers
+  // Bottom left bumper above left flipper
+    let bottomLeftBumper = rect(100, canvasHeight-220, 100, 20, "Bottom Bumper", 0.4, 10,
+      {isStatic: true});
+
+  // Bottom right bumper above right flipper
+    let bottomRightBumper = rect(345, canvasHeight-220, 100, 20, "Bottom Bumper", -0.4, 10,
+      {isStatic: true});
+
+    // Middle left bumper
+    //(x, y, sides, radius, [options])
+    let middleLeftBumper = Bodies.polygon(30, canvasHeight-400, 5, 40, {
+      label: "Middle Bumper",
+      isStatic: true,
+      render: {fillStyle: "#4B0082"},
+      chamfer: {radius: 10}
+      });
+
+    //Middle right bumper
+    let middleRightBumper = Bodies.rectangle(415, canvasHeight-400, 45, 100, {
+      label: "Middle Bumper",
+      isStatic: true,
+      render: {fillStyle: "#4B0082"},
+      chamfer: {radius: 20}
+      });
+
+
+    World.add(engine.world, [bottomLeftBumper, bottomRightBumper, middleLeftBumper, middleRightBumper]);
+
+
+  // End of create bumpers
 
     // add mouse control
     var mouse = Mouse.create(render.canvas),
