@@ -1,9 +1,9 @@
 import React from 'react';
 import GameTable from './containers/GameTable';
-import ScoreBar from './containers/ScoreBar';
+import './css/styles.css';
 
 const App = () => (
-  <div>
+  <div className="table">
     <GameTable />
   </div>
 );
