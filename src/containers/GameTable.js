@@ -1,13 +1,17 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import Matter from "matter-js";
 import MatterAttractors from "matter-attractors";
-// import DrawStatic from "../helpers/DrawStatic";
-// import DrawFlippers from "../helpers/DrawFlippers.js";
 
 class GameTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      player: "Bob",
+      score: 0,
+      lives: 3
+    }
+
   }
 
   componentDidMount() {
@@ -25,7 +29,6 @@ class GameTable extends Component {
 
     const canvasWidth = 500;
     const canvasHeight = 700;
-    var score = 0;
 
     var render = Render.create({
       element: this.refs.game,
@@ -37,6 +40,7 @@ class GameTable extends Component {
         background: "#E0FFFF",
       }
     });
+
     console.log("Render:", render);
 
     function rect(x, y, width, height, label, angle, chamferRadius, color){
@@ -70,9 +74,6 @@ class GameTable extends Component {
       });
     }
 
-    let leftFlipperUp = false;
-    let rightFlipperUp = false;
-
     World.add(engine.world, [
       rect(canvasWidth/2, 0, canvasWidth, 50, "Top Wall", 0, 0),
       rect(0, canvasHeight/2, 50, canvasHeight, "Left Wall", 0, 0),
@@ -81,9 +82,6 @@ class GameTable extends Component {
       rect(85, canvasHeight-150, 150, 20, "Left Ledge", 0.4, 10),
       rect(360, canvasHeight-150, 150, 20, "Right Ledge", -0.4, 10),
       rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
-      // rect(450, 45, 10, 85, "Top Right angled wall", -0.72, 0),
-      // rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0),
-      // rect(55, 610, 10, 165, "Bottom Left slope", -0.6, 0),
       bumper(140, 140, 15, "Red Bumper", "#B22222"),
       bumper(200, 140, 15, "Red Bumper", "#B22222"),
       bumper(260, 140, 15, "Red Bumper", "#B22222"),
@@ -214,6 +212,7 @@ class GameTable extends Component {
         World.add(engine.world, [pinball]);
         Matter.Body.setVelocity(pinball, { x: 0, y: -30});
 		    Matter.Body.setAngularVelocity(pinball, 0);
+        console.log("after pinball", engine);
       };
     };
 
@@ -223,21 +222,38 @@ class GameTable extends Component {
     document.addEventListener('keydown', rightKeyPress, false);
     });
 
+    var newGameScore = 0;
+    console.log("new game score:", newGameScore);
+
+    function scoreUpdate(scoreEvent) {
+      if(scoreEvent==="Red"){
+        newGameScore += 10;
+      //   this.setState(prevState => {
+      //     return {score: prevState.score + 10}
+      // })
+    } else if(scoreEvent==="Blue"){
+        newGameScore += 50;
+      //   this.setState(prevState => {
+      //     return {score: prevState.score + 50}
+      // })
+    }
+    }
+
     Matter.Events.on(engine, 'collisionStart', function(event) {
-      console.log("Event: ", event)
+      // console.log("Event: ", event)
       var pairs = event.pairs;
-      console.log("Pair no visible: ", pairs)
-      console.log("Pair visible: ", pairs[0]);
-      console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
+      // console.log("Pair no visible: ", pairs)
+      // console.log("Pair visible: ", pairs[0]);
+      // console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
       if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
-        score += 10;
+        scoreUpdate("Red");
         console.log("Hit red bumper!");
-        console.log("Score ", score);
+        console.log("Score ", newGameScore);
       }
       if(pairs[0].bodyA.label==="Blue Bumper" && pairs[0].bodyB.label==="Pinball"){
-        score += 50;
+        scoreUpdate("Blue")
         console.log("Hit blue bumper!");
-        console.log("Score ", score);
+        console.log("Score ", newGameScore);
       }
     });
 
@@ -246,7 +262,17 @@ class GameTable extends Component {
   }
 
   render() {
-    return <div ref="game" />;
+    return(
+      <Fragment>
+      <div className="scoreBar">
+        <p>Player: {this.state.player}</p>
+        <p>Score: {this.state.score}</p>
+        <p>Lives: {this.state.lives}</p>
+      </div>
+      <div ref="game" />
+      </Fragment>
+    );
+
   }
 }
 export default GameTable;
