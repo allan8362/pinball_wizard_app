@@ -1,6 +1,7 @@
 import React from 'react';
 // import {render} from 'react-dom';
 import GameTable from './containers/GameTable';
+import ScoreBar from './containers/ScoreBar';
 
 const App = () => (
   <div>
