@@ -18,7 +18,9 @@ class GameTable extends Component {
       Body = Matter.Body,
       Mouse = Matter.Mouse,
       MouseConstraint = Matter.MouseConstraint,
-      Constraint = Matter.Constraint;
+      Constraint = Matter.Constraint,
+      Detector = Matter.Detector;
+
 
     var engine = Engine.create({});
     console.log("Engine: ", engine);
@@ -33,7 +35,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        wireframes: false,
+        wireframes: true,
         background: "#E0FFFF",
       }
     });
@@ -70,16 +72,13 @@ class GameTable extends Component {
       });
     }
 
-    let leftFlipperUp = false;
-    let rightFlipperUp = false;
-
     World.add(engine.world, [
       rect(canvasWidth/2, 0, canvasWidth, 50, "Top Wall", 0, 0),
       rect(0, canvasHeight/2, 50, canvasHeight, "Left Wall", 0, 0),
       rect(460, canvasHeight, 60, 50, "Bottom Release Wall", 0, 0),
       rect(canvasWidth, canvasHeight/2, 50, canvasHeight, "Right Wall", 0, 0),
-      rect(85, canvasHeight-150, 150, 20, "Left Ledge", 0.4, 10),
-      rect(360, canvasHeight-150, 150, 20, "Right Ledge", -0.4, 10),
+      rect(90, canvasHeight-150, 165, 20, "Left Ledge", 0.4, 10),
+      rect(360, canvasHeight-150, 165, 20, "Right Ledge", -0.4, 10),
       rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
       // rect(450, 45, 10, 85, "Top Right angled wall", -0.72, 0),
       // rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0),
@@ -102,19 +101,17 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    let leftContainerTop = Bodies.circle(190, 510, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
-    let rightContainerTop = Bodies.circle(250, 510, 40, {isStatic: true, render: {visible: true}, collisionFilter: {category: 1, group: 0}});
-    let leftContainerBottom = Bodies.circle(215, 700, 80, {isStatic: true,
-      render: {fillStyle: "#B22222", visible: true}, collisionFilter: {category: 1, group: 0}});
+    let leftContainer = rect(100, canvasHeight-135, 200, 20, "Left Flipper Holder", 0.4, 10,
+      {isStatic: true});
 
+    let rightContainer = rect(345, canvasHeight-130, 170, 20, "Right Flipper Holder", -0.4, 10,
+      {isStatic: true});
 
-
-
-    World.add(engine.world, [leftContainerTop, leftContainerBottom, rightContainerTop]);
+    World.add(engine.world, [leftContainer, rightContainer]);
 
   // Left Flipper:
   // (x, y, width, height, slope, [options])
-    let leftFlipper = Bodies.trapezoid(153, 690, 20, 70, 0.23, {
+    let leftFlipper = Bodies.trapezoid(170, 525, 20, 70, 0.23, {
       label: "Left Flipper",
       // isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -122,11 +119,12 @@ class GameTable extends Component {
       chamfer: {}}); //chamfer allows for rounded edges on the flippers
 
   //Left flipper hinge
-    leftFlipper.hinge = Bodies.circle(162, 585, 2, {
+    leftFlipper.hinge = Bodies.circle(165, 585, 2, {
       label: "Left Flipper Hinge",
       isStatic: true,
       render: {fillStyle: "#ffffff"}
     });
+
   //Hold flipper in place
     leftFlipper.constraint = Constraint.create ({
       bodyA: leftFlipper,
@@ -136,10 +134,8 @@ class GameTable extends Component {
       stiffness: 0
     });
 
-    // Body.rotate(leftFlipper, -0.5) {}
-
   // Right Flipper:
-    let rightFlipper = Bodies.trapezoid(252, 600, 20, 70, 0.23, {
+    let rightFlipper = Bodies.trapezoid(260, 535, 20, 70, 0.23, {
       label: "Right Flipper",
       // isStatic: true,
       render: {fillStyle: "#B22222"},
@@ -162,25 +158,26 @@ class GameTable extends Component {
         stiffness: 0
       });
 
-
     World.add(engine.world, [leftFlipper, leftFlipper.hinge, leftFlipper.constraint, rightFlipper, rightFlipper.hinge, rightFlipper.constraint]);
-    console.log(leftFlipper);
+    Body.setMass(leftFlipper, 5000);
+    Body.setMass(rightFlipper, 5000);
+
     //Functionality needed for moving flippers when key is pressed
     // Left Flipper
       const leftKeyPress = function (event){
         if(event.keyCode===37){
-          console.log("left flipper");
+          // console.log("left flipper");
           Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
-  		    Matter.Body.setAngularVelocity(leftFlipper, -0.5);
+  		    Matter.Body.setAngularVelocity(leftFlipper, -0.45);
         };
       };
 
     //Right Flipper
     const rightKeyPress = function (event){
       if(event.keyCode===39){
-        console.log("right flipper");
+        // console.log("right flipper");
         Matter.Body.setVelocity(rightFlipper, { x: 0, y: 0});
-        Matter.Body.setAngularVelocity(rightFlipper, 0.5);
+        Matter.Body.setAngularVelocity(rightFlipper, 0.45);
       };
     };
   //End of flipper creation
@@ -224,11 +221,11 @@ class GameTable extends Component {
     });
 
     Matter.Events.on(engine, 'collisionStart', function(event) {
-      console.log("Event: ", event)
+      // console.log("Event: ", event)
       var pairs = event.pairs;
-      console.log("Pair no visible: ", pairs)
-      console.log("Pair visible: ", pairs[0]);
-      console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
+      // console.log("Pair no visible: ", pairs)
+      // console.log("Pair visible: ", pairs[0]);
+      // console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
       if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
         score += 10;
         console.log("Hit red bumper!");
