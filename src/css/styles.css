@@ -8,6 +8,34 @@
   font-weight: bold;
 }
 
-.table {
-  margin: 20px 50px;
+.nav {
+  color: #B22222;
+  list-style: none;
+  display: flex;
+}
+
+ul.nav {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a:visited {
+  color: #B22222;
+}
+
+p, li {
+  color: #B22222;
+}
+
+li {
+  padding-left: 70px;
+}
+
+body {
+  background-color: #E0FFFF;
+  font-family: fantasy;
 }
