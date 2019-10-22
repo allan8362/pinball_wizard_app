@@ -181,9 +181,9 @@ class GameTable extends Component {
         Matter.Body.setAngularVelocity(rightFlipper, 0.45);
       };
     };
-  //End of flipper creation
+//End of flipper creation
 
-    // add mouse control
+// add mouse control
     var mouse = Mouse.create(render.canvas),
       mouseConstraint = MouseConstraint.create(engine, {
         mouse: mouse,
@@ -196,12 +196,13 @@ class GameTable extends Component {
       });
 
     World.add(engine.world, mouseConstraint);
-
     Matter.Events.on(mouseConstraint, "mousedown", function(event) {
       console.log("x: ", event.mouse.position.x);
       console.log("y: ", event.mouse.position.y);
     });
+// end of mouse control
 
+// START pinball creation and launch functions
     var ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#C0C0C0"}}
     // circles - x, y, radius, {options}
     var pinball = Bodies.circle(450, 650, 10, ballOptions);
@@ -215,27 +216,27 @@ class GameTable extends Component {
         console.log("after pinball", engine);
       };
     };
+// END pinball creation and launch functions
 
+// OTHER event listeners
     document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', launchPinball, false);
     document.addEventListener('keydown', leftKeyPress, false);
     document.addEventListener('keydown', rightKeyPress, false);
     });
+// End of OTHER event listeners
 
-    var newGameScore = 0;
-    console.log("new game score:", newGameScore);
 
-    function scoreUpdate(scoreEvent) {
+// START of Scoring Functions
+    const scoreUpdate = (scoreEvent) => {
       if(scoreEvent==="Red"){
-        newGameScore += 10;
-      //   this.setState(prevState => {
-      //     return {score: prevState.score + 10}
-      // })
+        this.setState(prevState => {
+          return {score: prevState.score + 10}
+      })
     } else if(scoreEvent==="Blue"){
-        newGameScore += 50;
-      //   this.setState(prevState => {
-      //     return {score: prevState.score + 50}
-      // })
+        this.setState(prevState => {
+          return {score: prevState.score + 50}
+      })
     }
     }
 
@@ -247,15 +248,12 @@ class GameTable extends Component {
       // console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
       if(pairs[0].bodyA.label==="Red Bumper" && pairs[0].bodyB.label==="Pinball"){
         scoreUpdate("Red");
-        console.log("Hit red bumper!");
-        console.log("Score ", newGameScore);
       }
       if(pairs[0].bodyA.label==="Blue Bumper" && pairs[0].bodyB.label==="Pinball"){
         scoreUpdate("Blue")
-        console.log("Hit blue bumper!");
-        console.log("Score ", newGameScore);
       }
     });
+// END of Scoring Functions
 
     Engine.run(engine);
     Render.run(render);
