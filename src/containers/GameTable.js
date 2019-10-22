@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from "react";
 import Matter from "matter-js";
-import MatterAttractors from "matter-attractors";
 
 class GameTable extends Component {
   constructor(props) {
@@ -22,8 +21,7 @@ class GameTable extends Component {
     Body = Matter.Body,
     Mouse = Matter.Mouse,
     MouseConstraint = Matter.MouseConstraint,
-    Constraint = Matter.Constraint,
-    Detector = Matter.Detector;
+    Constraint = Matter.Constraint;
 
 
     var engine = Engine.create({});
