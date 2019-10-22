@@ -9,9 +9,15 @@
 }
 
 .nav {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  background-color: #4B0082;
+  color: #fff;
+  font-weight: bold;
   color: #B22222;
   list-style: none;
-  display: flex;
+  padding: 0;
 }
 
 ul.nav {
