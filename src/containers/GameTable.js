@@ -35,7 +35,7 @@ class GameTable extends Component {
       options: {
         width: canvasWidth,
         height: canvasHeight,
-        wireframes: false,
+        wireframes: true,
         background: "#E0FFFF",
       }
     });
@@ -77,8 +77,8 @@ class GameTable extends Component {
       rect(0, canvasHeight/2, 50, canvasHeight, "Left Wall", 0, 0),
       rect(460, canvasHeight, 60, 50, "Bottom Release Wall", 0, 0),
       rect(canvasWidth, canvasHeight/2, 50, canvasHeight, "Right Wall", 0, 0),
-      rect(90, canvasHeight-150, 150, 20, "Left Ledge", 0.4, 10),
-      rect(360, canvasHeight-150, 150, 20, "Right Ledge", -0.4, 10),
+      rect(90, canvasHeight-150, 165, 20, "Left Ledge", 0.4, 10),
+      rect(360, canvasHeight-150, 165, 20, "Right Ledge", -0.4, 10),
       rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
       // rect(450, 45, 10, 85, "Top Right angled wall", -0.72, 0),
       // rect(375, 620, 10, 150, "Bottom Right slope", 0.7, 0),
@@ -101,18 +101,11 @@ class GameTable extends Component {
 
   //Creating the flippers
   //Containers needed to keep flippers in place so isStatic option does not need to be used
-    let leftContainer = rect(85, canvasHeight-131, 200, 20, "Left Flipper Holder", 0.4, 10,
-      {
-        label: "leftContainer",
-        isStatic: true,
-        render: {visible: false}});
+    let leftContainer = rect(100, canvasHeight-135, 200, 20, "Left Flipper Holder", 0.4, 10,
+      {isStatic: true});
 
-    let rightContainer = rect(335, canvasHeight-118, 150, 20, "Right Flipper Holder", -0.4, 10,
-      {
-        label: "rightContainer",
-        isStatic: true,
-        render: {visible: true},
-        collisionFilter: {category: 0}});
+    let rightContainer = rect(345, canvasHeight-130, 170, 20, "Right Flipper Holder", -0.4, 10,
+      {isStatic: true});
 
     World.add(engine.world, [leftContainer, rightContainer]);
 
