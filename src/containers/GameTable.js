@@ -307,7 +307,7 @@ class GameTable extends Component {
             alert('Game Over! You scored ' + this.state.score + ' points!');
             document.location.reload();
 
-          } 
+          }
         };
 
         Matter.Events.on(engine, 'collisionStart', function(event) {
