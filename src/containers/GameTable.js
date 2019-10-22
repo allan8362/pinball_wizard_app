@@ -8,7 +8,12 @@ class GameTable extends Component {
     this.state = {
       player: "Bob",
       score: 0,
-      lives: 3
+      lives: 1,
+      highScores: [{
+        id: 1,
+        player: "Tommy",
+        score: 8000
+      }]
     }
 
   }
@@ -43,7 +48,7 @@ class GameTable extends Component {
 
     console.log("Render:", render);
 
-    function rect(x, y, width, height, label, angle, chamferRadius, color){
+    const rect = (x, y, width, height, label, angle, chamferRadius, color) => {
       return Bodies.rectangle(x, y, width, height, {
         isStatic: true,
         restitution: 1,
@@ -55,7 +60,7 @@ class GameTable extends Component {
       });
     }
 
-    function bumper(x, y, radius, label, color){
+    const bumper = (x, y, radius, label, color) => {
       return Bodies.circle(x, y, radius, {
         isStatic: true,
         restitution: 1,
@@ -64,7 +69,7 @@ class GameTable extends Component {
       });
     }
 
-    function polygon(x, y, sides, radius, angle, label, chamferRadius){
+    const polygon = (x, y, sides, radius, angle, label, chamferRadius) => {
       return Bodies.polygon(x, y, sides, radius, {
         isStatic: true,
         angle: angle,
@@ -78,26 +83,27 @@ class GameTable extends Component {
       rect(canvasWidth/2, 0, canvasWidth, 50, "Top Wall", 0, 0),
       rect(0, canvasHeight/2, 50, canvasHeight, "Left Wall", 0, 0),
       rect(460, canvasHeight, 60, 50, "Bottom Release Wall", 0, 0),
+      rect(220, canvasHeight, 405, 50, "Drop Zone", 0, 0),
       rect(canvasWidth, canvasHeight/2, 50, canvasHeight, "Right Wall", 0, 0),
       rect(90, canvasHeight-150, 165, 20, "Left Ledge", 0.4, 10),
       rect(360, canvasHeight-150, 165, 20, "Right Ledge", -0.4, 10),
       rect(430, 420, 20, 565, "Ball Release wall", 0, 10),
       bumper(164, 135, 15, "Red Bumper", "#B22222"), //top left
-      bumper(canvasWidth/2.2, 135, 15, "Blue Bumper", "#0000FF"), //top middle
+      bumper(canvasWidth/2.2, 122, 15, "Blue Bumper", "#0000FF"), //top middle
       bumper(290, 135, 15, "Red Bumper", "#B22222"), //top right
-      bumper(164, 200, 15, "Red Bumper", "##B22222"), //middle left
-      bumper(290, 200, 15, "Red Bumper", "#B22222"), //middle right
+      bumper(151, 200, 15, "Red Bumper", "##B22222"), //middle left
+      bumper(303, 200, 15, "Red Bumper", "#B22222"), //middle right
       bumper(164, 265, 15, "Red Bumper", "#B22222"), //bottom left
-      bumper(canvasWidth/2.2, 265, 15, "Red Bumper", "#B22222"), // middle bottom
+      bumper(canvasWidth/2.2, 278, 15, "Red Bumper", "#B22222"), // middle bottom
       bumper(290, 265, 15, "Red Bumper", "#B22222"), //bottom right left
       polygon(35, 35, 3, 40, 0.8, "Top Left Bumper", 0),
       polygon(470, 35, 3, 40, 0.3, "Top Right Bumper", 0)
     ]);
 
-    // these var are NOT USED anywhere in game but using to log out options for rectangle
-    var triangleWall = rect(345, 30, 5, 250, "Triangle Wall", 0, 0, "#000");
+    // these are NOT USED anywhere in game but using to log out options for rectangle
+    let triangleWall = rect(345, 30, 5, 250, "Triangle Wall", 0, 0, "#000");
     console.log("Rectangle: ", triangleWall);
-    var bumperRed = bumper(140, 140, 50, "Red Bumper", "#B22222");
+    let bumperRed = bumper(140, 140, 50, "Red Bumper", "#B22222");
     console.log("Bumper: ", bumperRed);
     // above can be removed later when finished debugging
 
@@ -169,7 +175,6 @@ class GameTable extends Component {
         // Left Flipper
         const leftKeyPress = function (event){
           if(event.keyCode===37){
-            // console.log("left flipper");
             Matter.Body.setVelocity(leftFlipper, { x: 0, y: 0});
             Matter.Body.setAngularVelocity(leftFlipper, -0.45);
           };
@@ -178,7 +183,6 @@ class GameTable extends Component {
         //Right Flipper
         const rightKeyPress = function (event){
           if(event.keyCode===39){
-            // console.log("right flipper");
             Matter.Body.setVelocity(rightFlipper, { x: 0, y: 0});
             Matter.Body.setAngularVelocity(rightFlipper, 0.45);
           };
@@ -224,7 +228,7 @@ class GameTable extends Component {
 
         // add mouse control
 
-        var mouse = Mouse.create(render.canvas),
+        let mouse = Mouse.create(render.canvas),
         mouseConstraint = MouseConstraint.create(engine, {
           mouse: mouse,
           constraint: {
@@ -243,9 +247,9 @@ class GameTable extends Component {
         // end of mouse control
 
         // START pinball creation and launch functions
-        var ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#C0C0C0"}}
+        let ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#C0C0C0"}}
         // circles - x, y, radius, {options}
-        var pinball = Bodies.circle(450, 650, 10, ballOptions);
+        let pinball = Bodies.circle(450, 650, 10, ballOptions);
         console.log("Pinball: ", pinball);
 
         const launchPinball = function (event){
@@ -264,10 +268,9 @@ class GameTable extends Component {
           document.addEventListener('keydown', leftKeyPress, false);
           document.addEventListener('keydown', rightKeyPress, false);
         });
-        // End of OTHER event listeners
+      // End of OTHER event listeners
 
-
-        // START of Scoring Functions
+      // START of Scoring Functions
         const scoreUpdate = (scoreEvent) => {
           if(scoreEvent==="Red"){
             this.setState(prevState => {
@@ -289,9 +292,27 @@ class GameTable extends Component {
           };
         }
 
+        const livesUpdate = () => {
+          this.setState(prevState => {
+            return {lives: prevState.lives - 1}
+          });
+          if(this.state.lives===0){
+            const newScore = {
+              id: Date.now(),
+              player: this.state.player,
+              score: this.state.score
+            }
+            const updatedHighScores = [...this.state.highScores, newScore]
+            this.setState({highScores: updatedHighScores})
+            alert('Game Over! You scored ' + this.state.score + ' points!');
+            document.location.reload();
+
+          }
+        };
+
         Matter.Events.on(engine, 'collisionStart', function(event) {
           // console.log("Event: ", event)
-          var pairs = event.pairs;
+          let pairs = event.pairs;
           // console.log("Pair no visible: ", pairs)
           // console.log("Pair visible: ", pairs[0]);
           // console.log("collision between " + pairs[0].bodyA.label + " - " + pairs[0].bodyB.label);
@@ -306,6 +327,10 @@ class GameTable extends Component {
           }
           if(pairs[0].bodyA.label==="Middle Bumper" && pairs[0].bodyB.label==="Pinball"){
             scoreUpdate("Middle");
+          }
+          if(pairs[0].bodyA.label==="Drop Zone" && pairs[0].bodyB.label==="Pinball"){
+            engine.world.bodies.pop();
+            window.setTimeout(livesUpdate(), 1000);
           }
         });
         // END of Scoring Functions
