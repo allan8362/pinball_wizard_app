@@ -21,7 +21,8 @@ class GameTable extends Component {
     Body = Matter.Body,
     Mouse = Matter.Mouse,
     MouseConstraint = Matter.MouseConstraint,
-    Constraint = Matter.Constraint;
+    Constraint = Matter.Constraint,
+    Events = Matter.Events;
 
 
     var engine = Engine.create({});
@@ -242,7 +243,7 @@ class GameTable extends Component {
         // end of mouse control
 
         // START pinball creation and launch functions
-        let ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#C0C0C0"}}
+        let ballOptions = {restitution: 1, label: "Pinball", friction: 0.5, render: {fillStyle: "#2F4F4F"}}
         // circles - x, y, radius, {options}
         let pinball = Bodies.circle(450, 650, 10, ballOptions);
         console.log("Pinball: ", pinball);
@@ -250,12 +251,20 @@ class GameTable extends Component {
         const launchPinball = function (event){
           if(event.keyCode===32){
             World.add(engine.world, [pinball]);
-            Matter.Body.setVelocity(pinball, { x: 0, y: -30});
+            Matter.Body.setVelocity(pinball, { x: 0, y: -35});
             Matter.Body.setAngularVelocity(pinball, 0);
             console.log("after pinball", engine);
           };
         };
         // END pinball creation and launch functions
+
+        //Prevents pinball from going back down release area
+        Events.on(engine, 'beforeUpdate', function(event) {
+          if (pinball.position.x > 430 && pinball.velocity.y > 0) {
+            Body.setVelocity(pinball, { x: 0, y: -10 });
+          }
+        });
+        //End
 
         // OTHER event listeners
         document.addEventListener('DOMContentLoaded', () => {
