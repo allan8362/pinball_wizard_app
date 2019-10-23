@@ -1,13 +1,15 @@
-import React from 'react';
-// import {render} from 'react-dom';
-import GameTable from './containers/GameTable';
+import React, {Component, Fragment} from 'react';
+import HomePage from './containers/HomePage';
+import './css/styles.css';
 
-const App = () => (
-  <div>
-    <GameTable />
-  </div>
-);
-
-// render (<App />, document.getElementById('root'));
+class App extends Component {
+  render() {
+    return (
+      <Fragment>
+        <HomePage />
+      </Fragment>
+    );
+  }
+}
 
 export default App;

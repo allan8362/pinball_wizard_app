@@ -1,0 +1,67 @@
+.scoreBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 500px;
+  background-color: #4B0082;
+}
+
+.scoreBar p {
+  color: #fff;
+  font-weight: bold;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  /* background-color: #4B0082; */
+  list-style: none;
+  padding: 0;
+}
+
+ul.nav {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a:visited {
+  color: #B22222;
+}
+
+p, li {
+  color: #B22222;
+}
+
+li {
+  padding-left: 70px;
+}
+
+body {
+  background-color: #E0FFFF;
+  font-family: fantasy;
+  margin-left: 20px;
+}
+
+table,
+td {
+    border: 1px solid #333;
+}
+
+table {
+  width: 50%;
+}
+
+td {
+  padding-left: 15px;
+}
+
+thead,
+tfoot {
+    background-color: #4B0082;
+    color: #fff;
+}
