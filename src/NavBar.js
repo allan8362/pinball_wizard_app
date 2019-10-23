@@ -8,10 +8,13 @@ const NavBar = (props) => {
           <a href="/">Home</a>
         </li>
         <li className="nav">
-          <a href="/info">Info</a>
+          <a href="/game">New Game</a>
         </li>
         <li className="nav">
-          <a href="/game">New Game</a>
+          <a href="/score">High Scores</a>
+        </li>
+        <li className="nav">
+          <a href="/info">Info</a>
         </li>
       </ul>
     </header>
