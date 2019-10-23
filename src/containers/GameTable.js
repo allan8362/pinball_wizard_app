@@ -6,14 +6,9 @@ class GameTable extends Component {
     super(props);
 
     this.state = {
-      player: "Bob",
+      player: "Player1",
       score: 0,
-      lives: 1,
-      highScores: [{
-        id: 1,
-        player: "Tommy",
-        score: 8000
-      }]
+      lives: 1
     }
 
   }
@@ -311,8 +306,7 @@ class GameTable extends Component {
               player: this.state.player,
               score: this.state.score
             }
-            const updatedHighScores = [...this.state.highScores, newScore]
-            this.setState({highScores: updatedHighScores})
+
             alert('Game Over! You scored ' + this.state.score + ' points!');
             document.location.reload();
 

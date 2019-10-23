@@ -1,35 +1,20 @@
 import React, {Component} from 'react';
 import HighScoreList from "../components/HighScoreList";
+import Request from '../helpers/request';
 
 class HighScore extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      data: [
-        { id: 1,
-          name: "Tommy",
-          score: 12000
-
-        },
-        { id: 2,
-          name: "Kev",
-          score: 1100
-        },
-        { id: 3,
-          name: "Allan",
-          score: 850
-        },
-        { id: 4,
-          name: "Sally",
-          score: 500
-        },
-        { id: 5,
-          name: "Acid Queen",
-          score: 300
-        },
-      ]
+      data: []
     }
+  }
+
+  componentDidMount() {
+    const request = new Request();
+    request.get('/players')
+    .then((data) => {this.setState({data: data})})
   }
 
   render(){
