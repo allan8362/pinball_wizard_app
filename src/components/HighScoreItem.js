@@ -5,7 +5,6 @@ class HighScoreItem extends Component {
     return(
       <Fragment>
         <tr>
-        <td>{this.props.position}</td>
         <td>{this.props.name}</td>
         <td>{this.props.score}</td>
         </tr>
