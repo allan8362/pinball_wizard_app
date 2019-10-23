@@ -8,16 +8,17 @@ class HighScore extends Component {
     this.state = {
       data: [
         { id: 1,
+          name: "Tommy",
+          score: 12000
+
+        },
+        { id: 2,
           name: "Kev",
           score: 1100
         },
-        { id: 2,
+        { id: 3,
           name: "Allan",
           score: 850
-        },
-        { id: 3,
-          name: "Tommy",
-          score: 12000
         },
         { id: 4,
           name: "Sally",

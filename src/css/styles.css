@@ -46,3 +46,22 @@ body {
   font-family: fantasy;
   margin-left: 20px;
 }
+
+table,
+td {
+    border: 1px solid #333;
+}
+
+table {
+  width: 50%;
+}
+
+td {
+  padding-left: 15px;
+}
+
+thead,
+tfoot {
+    background-color: #4B0082;
+    color: #fff;
+}

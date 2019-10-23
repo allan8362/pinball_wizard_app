@@ -1,12 +1,15 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 
-class HighScoreItem extends Component{
+class HighScoreItem extends Component {
   render(){
     return(
-      <div className="scoreItem">
-        <h4>{this.props.name}</h4>
-        <p>{this.props.score}</p>
-      </div>
+      <Fragment>
+        <tr>
+        <td>{this.props.position}</td>
+        <td>{this.props.name}</td>
+        <td>{this.props.score}</td>
+        </tr>
+      </Fragment>
     )
   }
 }
