@@ -14,4 +14,4 @@ const Player = (props) => {
   )
 }
 
-export default Pirate;
+export default Player;

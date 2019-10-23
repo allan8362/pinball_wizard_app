@@ -22,4 +22,4 @@ const PlayerList = (props) => {
 
 	)
 }
- export default PirateList;
+ export default PlayerList;
