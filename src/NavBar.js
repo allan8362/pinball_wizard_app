@@ -1,14 +1,16 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 const NavBar = (props) => {
   return (
     <header>
       <ul className="nav">
-        <li className="navLink">
+        <li className="nav">
           <a href="/">Home</a>
         </li>
-        <li className="navLink">
+        <li className="nav">
+          <a href="/info">Info</a>
+        </li>
+        <li className="nav">
           <a href="/game">New Game</a>
         </li>
       </ul>

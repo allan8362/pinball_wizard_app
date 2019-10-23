@@ -4,14 +4,20 @@
   justify-content: space-between;
   width: 500px;
   background-color: #4B0082;
+}
+
+.scoreBar p {
   color: #fff;
   font-weight: bold;
 }
 
 .nav {
-  color: #B22222;
-  list-style: none;
   display: flex;
+  justify-content: space-between;
+  width: 500px;
+  /* background-color: #4B0082; */
+  list-style: none;
+  padding: 0;
 }
 
 ul.nav {
@@ -38,4 +44,5 @@ li {
 body {
   background-color: #E0FFFF;
   font-family: fantasy;
+  margin-left: 20px;
 }

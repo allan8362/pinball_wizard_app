@@ -343,9 +343,11 @@ class GameTable extends Component {
         return(
           <Fragment>
           <div className="scoreBar">
+          <br/>
           <p>Player: {this.state.player}</p>
           <p>Score: {this.state.score}</p>
           <p>Lives: {this.state.lives}</p>
+          <br/>
           </div>
           <div ref="game" />
           </Fragment>

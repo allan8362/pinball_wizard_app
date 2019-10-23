@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from "react";
-import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import NavBar from '../NavBar.js';
 import GameTable from './GameTable';
+import InfoPage from '../components/InfoPage';
 import '../css/styles.css';
 
 class HomePage extends Component {
@@ -20,7 +21,8 @@ class HomePage extends Component {
           <li>Right Flipper: Right Arrow Key</li>
           </ul>
             <Switch>
-              <Route exact path="/game" component={GameTable} />
+              <Route path="/info" component={InfoPage} />
+              <Route path="/game" component={GameTable} />
             </Switch>
         </Fragment>
       </Router>
