@@ -11,7 +11,6 @@ class HomePage extends Component {
       <Router>
         <Fragment>
           <NavBar />
-          <body>
           <p>Welcome to PinBall Wizard!</p>
           <p>Can you play a mean pinball?</p>
           <p>Controls: </p>
@@ -20,7 +19,6 @@ class HomePage extends Component {
           <li>Left Flipper: Left Arrow Key</li>
           <li>Right Flipper: Right Arrow Key</li>
           </ul>
-          </body>
             <Switch>
               <Route exact path="/game" component={GameTable} />
             </Switch>
