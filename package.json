@@ -5,6 +5,7 @@
   "dependencies": {
     "matter-attractors": "^0.1.6",
     "matter-js": "^0.14.2",
+    "minimist": "^1.2.5",
     "poly-decomp": "^0.3.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
